@@ -48,6 +48,7 @@ echo '
         <ul>
             <li><a href="../' . $url_inicial . 'index.php">Home</a></li>
             <li><a href="../' . $url_inicial . 'aluno/ConsultaAluno.php">Alunos</a></li>
+            <li><a href="../' . $url_inicial . 'aluno/ConsultaAlunoComCss.php">Aluno2</a></li>
             
             <li><a href="../' . $url_inicial . 'professor/ConsultaProfessor.php">Professor</a></li>
             
