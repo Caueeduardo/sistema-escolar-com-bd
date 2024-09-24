@@ -1,0 +1,26 @@
+[
+  {
+    "codigo":1,
+    "descricao":"Rio do Sul"
+  },
+  {
+    "codigo":2,
+    "descricao":"Ibirama"
+  },
+  {
+    "codigo":3,
+    "descricao":"Ituporanga"
+  },
+  {
+    "codigo":4,
+    "descricao":"Joinville"
+  },
+  {
+    "codigo":5,
+    "descricao":"Florianópolis"
+  },
+  {
+    "codigo":6,
+    "descricao":"Blumenau"
+  }
+]
