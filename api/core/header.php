@@ -35,6 +35,7 @@ echo '
           <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/button.css">
           <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/header.css">          
           <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/table.css">
+          <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/checkbox.css">
           <script src="http://localhost/' . $pasta . '/api/js/api.js" defer async></script>          
     </head>
 <body class="background-06">

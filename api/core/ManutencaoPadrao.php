@@ -84,27 +84,17 @@ class ManutencaoPadrao {
         $sqlInsert .= ")";
         $sqlInsert .= " VALUES (";
 
-        $arDados = $this->getDadosFormularioPadrao($pagina, $acao = "INCLUIR");
+        $arDados = $this->getDadosFormularioPadrao($acao = "INCLUIR");
 
         $count = 1;
         foreach($aColunas as $aColuna){
 
-            if($aColuna["campo"] == "codigo"){
+            echo '<br>Campo:' . $aColuna["campo"] . ' - tipo:' . $aColuna["tipocampobancodados"];
+
+            if ($aColuna["tipocampobancodados"] == CampoFormulario::CAMPO_NUMERICO){
                 $sqlInsert .= (int)$arDados[$aColuna["campo"]];
-            } else {
-                 if ($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SELECT){
-                     if(intval($arDados[$aColuna["campo"]]) > 0){
-                         $sqlInsert .= $arDados[$aColuna["campo"]];
-                     } else {
-                        $sqlInsert .= "'" . $arDados[$aColuna["campo"]] . "'";
-                     }
-                 } else {
-                     if ($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_TEXTO || $aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SENHA) {
-                        $sqlInsert .= "'" . $arDados[$aColuna["campo"]] . "'";
-                     } else {
-                        $sqlInsert .= $arDados[$aColuna["campo"]];
-                     }
-                 }
+            } else if ($aColuna["tipocampobancodados"] == CampoFormulario::CAMPO_TEXTO){
+                $sqlInsert .= "'" . $arDados[$aColuna["campo"]] . "'";
             }
 
             if($count != $totalColunas){
@@ -119,7 +109,7 @@ class ManutencaoPadrao {
         getQuery()->executaQuery($sqlInsert);
 
         // Redireciona para a pagina de consulta
-        header('Location: Consulta' . ucfirst($pagina) . '.php');
+        // header('Location: Consulta' . ucfirst($pagina) . '.php');
     }
 
     protected function processaDadosAlteracao($pagina){
@@ -127,31 +117,18 @@ class ManutencaoPadrao {
 
         $sqlUpdate = "UPDATE " . $this->getTabela() . " SET ";
 
-        $arDados = $this->getDadosFormularioPadrao($pagina, $acao = "ALTERAR");
+        $arDados = $this->getDadosFormularioPadrao($acao = "ALTERAR");
+
         $aColunas = $this->getColunas();
 
         $totalColunas = count($aColunas);
         $count = 1;
         foreach($aColunas as $aColuna){
-            if($aColuna["campo"] == "codigo"){
-                $count++;
-                continue;
+            if ($aColuna["tipocampobancodados"] == CampoFormulario::CAMPO_NUMERICO){
+                $sqlUpdate .= $aColuna["campo"] . " = " . intval($arDados[$aColuna["campo"]]);
+            } else if ($aColuna["tipocampobancodados"] == CampoFormulario::CAMPO_TEXTO){
+                $sqlUpdate .= $aColuna["campo"] . " = '" . $arDados[$aColuna["campo"]] . "'";
             }
-
-            if ($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SELECT){
-                if(intval($arDados[$aColuna["campo"]]) > 0){
-                    $sqlUpdate .= $aColuna["campo"] . " = " . $arDados[$aColuna["campo"]];
-                } else {
-                    $sqlUpdate .= $aColuna["campo"] . " = '" . $arDados[$aColuna["campo"]] . "'";
-                }
-            } else {
-                if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_TEXTO || $aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SENHA){
-                    $sqlUpdate .= $aColuna["campo"] . " = '" . $arDados[$aColuna["campo"]] . "'";
-                } else {
-                    $sqlUpdate .= $aColuna["campo"] . " = " . $arDados[$aColuna["campo"]];
-                }
-            }
-
 
             if($count != $totalColunas){
                 $sqlUpdate .= ",";
@@ -235,8 +212,20 @@ class ManutencaoPadrao {
                 $sHTML .= '</select>';
                 $sHTML .= '<br>';
             } else {
-                $sHTML .= '<label for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>
-                           <input type="' . $aColuna["tipo"] . '" id="' . $aColuna["campo"] . '" name="' . $aColuna["campo"] . '"  ' . $obrigatorio . ' value="' . $aColuna["valor"] . '">';
+                if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_CHECKBOX){
+                    $sHTML .= '<div style="display: flex;">';
+                    $sHTML .= '<label class="tgl-btn" for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>';
+                    $sHTML .= '<div class="checkbox-wrapper-64">
+                                        <label class="switch">
+                                            <input type="' . $aColuna["tipo"] . '" id="' . $aColuna["campo"] . '" name="' . $aColuna["campo"] . '"  ' . $obrigatorio . ' value="' . $aColuna["valor"] . '" >
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>';
+                    $sHTML .= '</div>';
+                } else {
+                    $sHTML .= '<label for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>
+                               <input type="' . $aColuna["tipo"] . '" id="' . $aColuna["campo"] . '" name="' . $aColuna["campo"] . '"  ' . $obrigatorio . ' value="' . $aColuna["valor"] . '">';
+                }
             }
 
             $sHTML .= $quebraLinha;
@@ -287,9 +276,6 @@ class ManutencaoPadrao {
     }
 
     private function getDadosFormularioOld($pagina, $acao){
-
-        return $this->getDadosFormularioPadrao($pagina, $acao);
-
         $aDadosAtual = array();
         switch ($pagina){
             case "materia":
@@ -305,8 +291,9 @@ class ManutencaoPadrao {
                 $statuscurso  = $_POST["statuscurso"];
                 $periodocurso = $_POST["periodocurso"];
 
-                $aDadosAtual["nome"] = $nome;
                 $aDadosAtual["codigo"] = $this->getProximoCodigo($acao);
+                $aDadosAtual["nome"] = $nome;
+
                 $aDadosAtual["escola"] = (int)$escola;
                 $aDadosAtual["datainicio"] = $datainicio;
                 $aDadosAtual["datafim"] = $datafim;
