@@ -21,10 +21,9 @@ body {
 
 /* CLASSE CONTAINER */
 .container {
-    /* margin: 25px; */
     display: flex;
     flex-direction: column;
-    height: 80vh;
+    height: 90vh;
 }
 
 .footer {

@@ -2,7 +2,7 @@
     width: 95%;
     display: flex;
     justify-content: center;
-    gap:10px;
+    gap:5px;
 }
 
 .header ul li a {

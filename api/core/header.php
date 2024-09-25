@@ -25,22 +25,22 @@ if($request_uri == $uricomparacao
 
 $home = "http://localhost/" . $pasta . "/index.php";
 
-echo '
+$html = '
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
           <meta charset="UTF-8">
           <title>Sistema Escolar</title>
-          <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/style.css">
           <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/button.css">
           <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/header.css">          
           <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/table.css">
           <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/checkbox.css">
+          <link rel="stylesheet" href="http://localhost/' . $pasta . '/api/css/style.css">
           <script src="http://localhost/' . $pasta . '/api/js/api.js" defer async></script>          
     </head>
 <body class="background-06">
     <div class="header">
-        <ul>
+        <ul style="display:none;">
             <li><a href="' . $home . '">Home</a></li>
             <li><a href="../' . $url_inicial . 'aluno/consulta_aluno.php">Alunos</a></li>
             <li><a href="../' . $url_inicial . 'professor/consulta_professor.php">Professor</a></li>
@@ -48,18 +48,24 @@ echo '
             <li><a href="../' . $url_inicial . 'turma/consulta_turma.php">Turma</a></li>
             <li><a href="../' . $url_inicial . 'materia/consulta_materia.php">Matéria</a></li>            
         </ul>
-        <hr>
-        <h1>Abaixo consulta com banco de dados:</h1>
+        
         <ul>
-            <li><a href="' . $home . '">Home</a></li>
-            <li><a href="../' . $url_inicial . 'aluno/ConsultaAluno.php">Alunos</a></li>
-            <li><a href="../' . $url_inicial . 'professor/ConsultaProfessor.php">Professor</a></li>
-            <li><a href="../' . $url_inicial . 'escola/ConsultaEscola.php">Escola</a></li>
-            <li><a href="../' . $url_inicial . 'turma/ConsultaTurma.php">Turma</a></li>
-            <li><a href="../' . $url_inicial . 'materia/ConsultaMateria.php">Matéria</a></li>            
-        </ul>
+            <li><a href="' . $home . '">Home</a></li>';
 
+    // Ler os menus do sistema do banco de dados
+    $aListaMenu = getQuery()->selectAll("select * from menu order by mencodigo");
+
+    foreach($aListaMenu as $aDados){
+        $tabela = $aDados["mentabela"] ;
+        $nomeConsulta = ucfirst(strtolower($aDados["mentabela"]));
+
+        $html .= '<li><a href="../' . $url_inicial . $tabela . '/Consulta' . $nomeConsulta . '.php">' . $nomeConsulta . '</a></li>';
+    }
+
+     $html .= '</ul>
         <hr>
     </div>    
     <div class="container">';
     // abre o container
+
+echo $html;

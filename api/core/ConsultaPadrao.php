@@ -40,19 +40,6 @@ class ConsultaPadrao {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Consulta de ' . $this->getTitulo() . '</title>
                 </head>
-                <style>
-                    h1 {
-                        text-align:center;
-                    }
-                    body {
-                        display:flex;
-                        width:98vw;
-                        justify-content:center;
-                        align-items:center;
-                        flex-direction:column;
-                        margin-top:40px;
-                    }
-                </style>
                 <body>
                     <h1>Consulta de ' . $this->getTitulo() . '</h1>
                     <a href="Manutencao' . ucfirst($this->getTabela()) . '.php?ACAO=CONFIRMAR_INCLUSAO"><button class="button" type="button">Incluir<button></a>

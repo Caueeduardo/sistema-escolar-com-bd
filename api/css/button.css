@@ -15,16 +15,6 @@
     text-decoration: none;
 }
 
-#acaoExcluirOld {
-    width: 80px;
-    background-color: tomato;
-    border-color: tomato;
-    text-decoration: none;
-    padding: 7px;
-    color: #ffff;
-    border-radius: 5px;
-}
-
 #acaoExcluir {
     box-shadow: 0px 1px 0px 0px rgba(255, 99, 71, 0.588);
 	background:linear-gradient(to bottom, #ffa764 5%, #ff6923 100%);
