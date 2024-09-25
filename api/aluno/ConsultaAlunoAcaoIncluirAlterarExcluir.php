@@ -1,7 +1,7 @@
 <?php
 
 require_once("../core/ConsultaPadraoAlteracao.php");
-class ConsultaAluno extends ConsultaPadraoAlteracao {
+class ConsultaAluno extends ConsultaPadrao {
 
     protected function getTabela(){
         return 'aluno';

@@ -1,6 +1,7 @@
 <?php 
 require_once("Utils.php");
-class ConsultaPadrao {
+require_once("ConsultaAlteracaoPadrao.php");
+class ConsultaPadrao extends ConsultaAlteracaoPadrao{
 
     public function __construct(){
         require_once("../core/header.php");
