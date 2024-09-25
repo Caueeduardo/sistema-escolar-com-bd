@@ -47,14 +47,12 @@ $html = '
             <li><a href="../' . $url_inicial . 'escola/consulta_escola.php">Escola</a></li>
             <li><a href="../' . $url_inicial . 'turma/consulta_turma.php">Turma</a></li>
             <li><a href="../' . $url_inicial . 'materia/consulta_materia.php">Matéria</a></li>            
-        </ul>
-        
+        </ul>        
         <ul>
             <li><a href="' . $home . '">Home</a></li>';
 
     // Ler os menus do sistema do banco de dados
     $aListaMenu = getQuery()->selectAll("select * from menu order by mencodigo");
-
     foreach($aListaMenu as $aDados){
         $tabela = $aDados["mentabela"] ;
         $nomeConsulta = ucfirst(strtolower($aDados["mentabela"]));

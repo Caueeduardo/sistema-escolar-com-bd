@@ -1,3 +1,13 @@
+drop table aluno;
+drop table cidade;
+drop table escola;
+drop table materia;
+drop table menu;
+drop table professor;
+drop table sistema;
+drop table turma;
+drop table usuario;
+
 CREATE TABLE public.menu (
 	mencodigo int4 NOT NULL,
 	siscodigo int4 NOT NULL,

@@ -16,8 +16,8 @@ class ManutencaoTurma extends ManutencaoPadrao {
 
         $aListaOpcoes = $this->getListaOpcao($tabela = "escola", $campoChave = "codigo", $campoDescricao = "descricao", $condicao = "");
         $aDadosColunas[] = CampoFormulario::adicionaCampo($nomeCampo = "escola", $tipoCampo = CampoFormulario::CAMPO_TIPO_SELECT, $tipoCampoBancodados = CampoFormulario::CAMPO_NUMERICO, $obrigatorio = false, $valor = "", $quebraLinha = true, $aListaOpcoes);
-
-        $aDadosColunas[] = CampoFormulario::adicionaCampo($nomeCampo = "datainicio", $tipoCampo = CampoFormulario::CAMPO_TIPO_TEXTO, $tipoCampoBancodados = CampoFormulario::CAMPO_TEXTO);
+        
+        $aDadosColunas[] = CampoFormulario::adicionaCampo($nomeCampo = "datainicio", $tipoCampo = CampoFormulario::CAMPO_TIPO_TEXTO, $tipoCampoBancodados = CampoFormulario::CAMPO_TEXTO, $obrigatorio = false, $valor = "", $quebraLinha = false);
         $aDadosColunas[] = CampoFormulario::adicionaCampo($nomeCampo = "datafim", $tipoCampo = CampoFormulario::CAMPO_TIPO_TEXTO, $tipoCampoBancodados = CampoFormulario::CAMPO_TEXTO);
 
         $aListaOpcoes = array(
@@ -37,6 +37,9 @@ class ManutencaoTurma extends ManutencaoPadrao {
         return $aDadosColunas;
     }
 
+    protected function getLarguraFormulario(){
+        return 'style="width:80vw;"';
+    }
 }
 
 new ManutencaoTurma();

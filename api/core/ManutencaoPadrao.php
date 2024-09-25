@@ -1,5 +1,4 @@
 <?php
-
 require_once ("../core/CampoFormulario.php");
 class ManutencaoPadrao {
 
@@ -145,6 +144,10 @@ class ManutencaoPadrao {
         header('Location: Consulta' . ucfirst($pagina) . '.php');
     }
 
+    protected function getLarguraFormulario(){
+        return "";
+    }
+
     protected function processaDados(){
         $pagina = $this->getPagina();
 
@@ -180,12 +183,17 @@ class ManutencaoPadrao {
             header('Location: Consulta' . ucfirst($pagina) . '.php');
         }
 
-        $sHTML = '<div> <link rel="stylesheet" href="../css/formulario.css">';
+        // $sHTML = '<div> <link rel="stylesheet" href="../css/formulario.css">';
+        $sHTML = '<link rel="stylesheet" href="../css/formulario.css">';
+        $sHTML .= '<div>';
+        // $sHTML = '';
+
+        $larguraFormulario = $this->getLarguraFormulario();
 
         // FORMULARIO DE CADASTRO
         $sHTML .= '<h2 style="text-align:center;">Formulário de ' . ucfirst($pagina) . '</h2>
         <h3>' . $mensagemRegistroNaoEncontrado . '</h3>
-        <form action="Manutencao' . ucfirst($pagina) . '.php" method="POST">
+        <form ' . $larguraFormulario . ' action="Manutencao' . ucfirst($pagina) . '.php" method="POST">
             <input type="hidden" id="ACAO" name="ACAO" value="' . $acaoFormulario . '">            
             <input type="hidden" id="codigo" name="codigo" value="' . $codigo . '" required>';
 
