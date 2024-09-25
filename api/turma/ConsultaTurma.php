@@ -36,6 +36,26 @@ class ConsultaTurma extends ConsultaPadrao {
             "periodocurso",
         );
     }
+
+    protected function getDadosConsulta(){
+        $aDados = parent::getDadosConsulta();
+
+        $aDadosNew = array();
+        foreach($aDados as $key => $aDadosAtual){
+            $codigoEscola = $aDadosAtual["escola"];
+
+            // retorna o nome da turma concatenado com o codigo
+            $aDadosEscola = getQuery()->select("select descricao from escola where codigo = " . $codigoEscola);
+
+            $nomeConcatenado = $codigoEscola . " - " . $aDadosEscola["descricao"];
+
+            $aDadosAtual["escola"] = $nomeConcatenado;
+
+            $aDadosNew[$key] = $aDadosAtual;
+        }
+
+        return $aDadosNew;
+    }
 }
 
 new ConsultaTurma();
