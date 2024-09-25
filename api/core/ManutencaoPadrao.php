@@ -64,8 +64,6 @@ class ManutencaoPadrao {
     }
 
     protected function processaDadosInclusao($pagina){
-        $codigoAlterar = $_POST["codigo"];
-
         $aColunas = $this->getColunas();
         $totalColunas = count($aColunas);
 
@@ -86,17 +84,27 @@ class ManutencaoPadrao {
         $sqlInsert .= ")";
         $sqlInsert .= " VALUES (";
 
-        $arDados = $this->getDadosFormulario($pagina, $acao = "ALTERAR");
+        $arDados = $this->getDadosFormularioPadrao($pagina, $acao = "INCLUIR");
 
         $count = 1;
         foreach($aColunas as $aColuna){
 
             if($aColuna["campo"] == "codigo"){
                 $sqlInsert .= (int)$arDados[$aColuna["campo"]];
-            } else if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_TEXTO || $aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SENHA){
-                $sqlInsert .= "'" . $arDados[$aColuna["campo"]] . "'";
             } else {
-                $sqlInsert .= $arDados[$aColuna["campo"]];
+                 if ($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SELECT){
+                     if(intval($arDados[$aColuna["campo"]]) > 0){
+                         $sqlInsert .= $arDados[$aColuna["campo"]];
+                     } else {
+                        $sqlInsert .= "'" . $arDados[$aColuna["campo"]] . "'";
+                     }
+                 } else {
+                     if ($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_TEXTO || $aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SENHA) {
+                        $sqlInsert .= "'" . $arDados[$aColuna["campo"]] . "'";
+                     } else {
+                        $sqlInsert .= $arDados[$aColuna["campo"]];
+                     }
+                 }
             }
 
             if($count != $totalColunas){
@@ -119,7 +127,7 @@ class ManutencaoPadrao {
 
         $sqlUpdate = "UPDATE " . $this->getTabela() . " SET ";
 
-        $arDados = $this->getDadosFormulario($pagina, $acao = "ALTERAR");
+        $arDados = $this->getDadosFormularioPadrao($pagina, $acao = "ALTERAR");
         $aColunas = $this->getColunas();
 
         $totalColunas = count($aColunas);
@@ -130,11 +138,20 @@ class ManutencaoPadrao {
                 continue;
             }
 
-            if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_TEXTO || $aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SENHA){
-                $sqlUpdate .= $aColuna["campo"] . " = '" . $arDados[$aColuna["campo"]] . "'";
+            if ($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SELECT){
+                if(intval($arDados[$aColuna["campo"]]) > 0){
+                    $sqlUpdate .= $aColuna["campo"] . " = " . $arDados[$aColuna["campo"]];
+                } else {
+                    $sqlUpdate .= $aColuna["campo"] . " = '" . $arDados[$aColuna["campo"]] . "'";
+                }
             } else {
-                $sqlUpdate .= $aColuna["campo"] . " = " . $arDados[$aColuna["campo"]];
+                if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_TEXTO || $aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SENHA){
+                    $sqlUpdate .= $aColuna["campo"] . " = '" . $arDados[$aColuna["campo"]] . "'";
+                } else {
+                    $sqlUpdate .= $aColuna["campo"] . " = " . $arDados[$aColuna["campo"]];
+                }
             }
+
 
             if($count != $totalColunas){
                 $sqlUpdate .= ",";
@@ -216,6 +233,7 @@ class ManutencaoPadrao {
                 }
 
                 $sHTML .= '</select>';
+                $sHTML .= '<br>';
             } else {
                 $sHTML .= '<label for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>
                            <input type="' . $aColuna["tipo"] . '" id="' . $aColuna["campo"] . '" name="' . $aColuna["campo"] . '"  ' . $obrigatorio . ' value="' . $aColuna["valor"] . '">';
@@ -268,7 +286,7 @@ class ManutencaoPadrao {
         return $aDadosAtual;
     }
 
-    protected function getDadosFormulario($pagina, $acao){
+    private function getDadosFormularioOld($pagina, $acao){
 
         return $this->getDadosFormularioPadrao($pagina, $acao);
 
