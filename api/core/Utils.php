@@ -9,7 +9,7 @@ function formataData($data){
 
     echo 'DATA ATUAL: <br>' . $data;
     
-    // // // CHAMA A FUNCAO JAVASCRIPT
+    // // CHAMA A FUNCAO JAVASCRIPT
     // // echo "<script>
     // //         alert(converteData('2024-08-28'));
     // //       </script>";
@@ -37,7 +37,8 @@ function formataData($data){
 }
 
 function getNomePastaSistema(){
-    return "sistemaescolar-orientacao-objeto";
+    // return "sistemaescolar-orientacao-objeto";
+    return "sistema-escolar-com-bd";
 }
 
 function processaDados($pagina){
