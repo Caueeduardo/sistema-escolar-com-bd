@@ -1,7 +1,6 @@
 <?php 
 require_once("Utils.php");
-require_once("ConsultaAlteracaoPadrao.php");
-class ConsultaPadrao extends ConsultaAlteracaoPadrao{
+class ConsultaPadrao {
 
     public function __construct(){
         require_once("../core/header.php");
@@ -49,13 +48,14 @@ class ConsultaPadrao extends ConsultaAlteracaoPadrao{
                         display:flex;
                         width:98vw;
                         justify-content:center;
-                        align-itens:center;
+                        align-items:center;
                         flex-direction:column;
                         margin-top:40px;
                     }
                 </style>
                 <body>
                     <h1>Consulta de ' . $this->getTitulo() . '</h1>
+                    <a href="Manutencao' . ucfirst($this->getTabela()) . '.php?ACAO=CONFIRMAR_INCLUSAO"><button class="button" type="button">Incluir<button></a>
                     <table border="1">
                         <thead>';
     }
@@ -125,5 +125,22 @@ class ConsultaPadrao extends ConsultaAlteracaoPadrao{
         </html>';
 
         return $consulta;
+    }
+
+    // acoes da consulta
+    protected function getAcaoExcluir($pagina, $codigo){
+        $sHTML = "<a id='acaoExcluir' href='http://localhost/" . getNomePastaSistema() . "/api/" . $pagina . "/Manutencao" . ucfirst($pagina) . ".php?ACAO=EXCLUIR&codigo=" . $codigo . "'>Excluir</a>";
+        return $sHTML;
+    }
+
+    protected function getAcaoAlterar($pagina, $codigo){
+        $sHTML = "<a id='acaoAlterar' href='http://localhost/" . getNomePastaSistema() . "/api/" . $pagina . "/Manutencao" . ucfirst($pagina) . ".php?ACAO=ALTERAR&codigo=" . $codigo . "'>Alterar</a>";
+        return $sHTML;
+    }
+
+    protected function getAcoes($pagina, $codigo){
+        return
+            '<td>' . $this->getAcaoExcluir($pagina, $codigo). '</td>' .
+            '<td>' . $this->getAcaoAlterar($pagina, $codigo) . '</td>';
     }
 }
