@@ -1,10 +1,10 @@
 <?php
 
-require_once("../core/ConsultaPadraoCss.php");
-class ConsultaAluno extends ConsultaPadraoCss {
+require_once("../core/ConsultaPadrao.php");
+class ConsultaTurma extends ConsultaPadrao {
 
     protected function getTabela(){
-        return 'aluno';
+        return 'turma';
     }
 
     protected function getColunaOrdenacao(){
@@ -16,8 +16,10 @@ class ConsultaAluno extends ConsultaPadraoCss {
         return array(
             "Código",
             "Nome",
-            "E-mail",
-            "Senha"
+            "Data Início",
+            "Data Fim",
+            "Status Curso",
+            "Período Curso"
         );
     }
 
@@ -26,10 +28,12 @@ class ConsultaAluno extends ConsultaPadraoCss {
         return array(
             "codigo",
             "nome",
-            "email",
-            "senha",
+            "datainicio",
+            "datafim",
+            "statuscurso",
+            "periodocurso",
         );
     }
 }
 
-new ConsultaAluno();
+new ConsultaTurma();

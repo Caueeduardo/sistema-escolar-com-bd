@@ -3,7 +3,11 @@ require_once("Utils.php");
 class ConsultaPadrao {
 
     public function __construct(){
+        require_once("../core/header.php");
+        
         $this->processaDados();
+
+        require_once("../core/footer.php");
     }
 
     protected function processaDados(){
