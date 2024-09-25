@@ -52,7 +52,6 @@ echo '
         <ul>
             <li><a href="' . $home . '">Home</a></li>
             <li><a href="../' . $url_inicial . 'aluno/ConsultaAluno.php">Alunos</a></li>
-            <li><a href="../' . $url_inicial . 'aluno/ConsultaAlunoAcaoIncluirAlterarExcluir.php">Alunos - Alterar</a></li>
             <li><a href="../' . $url_inicial . 'professor/ConsultaProfessor.php">Professor</a></li>
             <li><a href="../' . $url_inicial . 'escola/ConsultaEscola.php">Escola</a></li>
             <li><a href="../' . $url_inicial . 'turma/ConsultaTurma.php">Turma</a></li>

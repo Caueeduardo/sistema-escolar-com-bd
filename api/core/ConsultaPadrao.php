@@ -20,6 +20,8 @@ class ConsultaPadrao extends ConsultaAlteracaoPadrao{
         foreach($aListaColunas as $coluna){
             $colunas .= "<th>" . $coluna . "</th>";
         }
+        
+        $colunas .= "<th colspan='2' width='200'>Ações</th>";
 
         $linhas = $this->getLinhas();
 
@@ -109,6 +111,7 @@ class ConsultaPadrao extends ConsultaAlteracaoPadrao{
             }
 
             $codigo = $aDados["codigo"];
+            
             $consulta .= $this->getAcoes($this->getTabela(), $codigo);
 
             // FECHA A LINHA

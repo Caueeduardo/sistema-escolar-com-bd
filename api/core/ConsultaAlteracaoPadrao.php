@@ -61,7 +61,7 @@ class ConsultaAlteracaoPadrao {
             }
         } else {
             // Redireciona para a pagina de consulta
-            header('Location: consulta_' . $pagina . '.php');
+            header('Location: Consulta' . ucfirst($pagina) . '.php');
         }        
     }
 
@@ -154,7 +154,7 @@ class ConsultaAlteracaoPadrao {
         file_put_contents("../" . $pagina . "/" . $pagina . ".json", json_encode($arDadosNovo));
 
         // Redireciona para a pagina de consulta
-        header('Location: consulta_' . $pagina . '.php');
+        header('Location: consulta' . $pagina . '.php');
     }
 
     protected function getDadosFormulario($pagina, $arDados, $acao){
@@ -273,12 +273,12 @@ class ConsultaAlteracaoPadrao {
 
     // ACOES GENERICAS
     protected function getAcaoExcluir($pagina, $codigo){
-        $sHTML = "<a id='acaoExcluir' href='http://localhost/" . getNomePastaSistema() . "/api/" . $pagina . "/cadastrar_" . $pagina . ".php?ACAO=EXCLUIR&codigo=" . $codigo . "'>Excluir</a>";
+        $sHTML = "<a id='acaoExcluir' href='http://localhost/" . getNomePastaSistema() . "/api/" . $pagina . "/Cadastrar" . ucfirst($pagina) . ".php?ACAO=EXCLUIR&codigo=" . $codigo . "'>Excluir</a>";
         return $sHTML;
     }
 
     protected function getAcaoAlterar($pagina, $codigo){
-        $sHTML = "<a id='acaoAlterar' href='http://localhost/" . getNomePastaSistema() . "/api/" . $pagina . "/cadastrar_" . $pagina . ".php?ACAO=ALTERAR&codigo=" . $codigo . "'>Alterar</a>";
+        $sHTML = "<a id='acaoAlterar' href='http://localhost/" . getNomePastaSistema() . "/api/" . $pagina . "/Cadastrar" . ucfirst($pagina) . ".php?ACAO=ALTERAR&codigo=" . $codigo . "'>Alterar</a>";
         return $sHTML;
     }
 
@@ -300,7 +300,9 @@ class ConsultaAlteracaoPadrao {
     }
 
     protected function getAcoes($pagina, $codigo){
-        return $this->getAcaoAlterar($pagina, $codigo) . $this->getAcaoIncluir($pagina, $codigo) ;
+        return 
+            '<td>' . $this->getAcaoExcluir($pagina, $codigo). '</td>' . 
+            '<td>' . $this->getAcaoAlterar($pagina, $codigo) . '</td>';
     }
 }                
                 
