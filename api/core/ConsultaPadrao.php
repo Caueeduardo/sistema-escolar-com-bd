@@ -40,7 +40,6 @@ class ConsultaPadrao {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Consulta de ' . $this->getTitulo() . '</title>
                 </head>
-                style-apagar!!!!
                 <body>
                     <h1>Consulta de ' . $this->getTitulo() . '</h1>
                     <a href="Manutencao' . ucfirst($this->getTabela()) . '.php?ACAO=CONFIRMAR_INCLUSAO"><button class="button" type="button">Incluir<button></a>
