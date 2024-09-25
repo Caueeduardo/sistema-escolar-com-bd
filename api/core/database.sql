@@ -69,6 +69,8 @@ CREATE TABLE public.turma (
 	CONSTRAINT turma_pk PRIMARY KEY (codigo)
 );
 
+alter table public.turma add column escola int2 NOT NULL default 2;
+
 CREATE TABLE public.materia (
 	codigo int2 NOT NULL,
 	turma int2 NOT NULL,

@@ -1,10 +1,10 @@
 <?php
 
 require_once("../core/ConsultaPadrao.php");
-class ConsultaTurma extends ConsultaPadrao {
+class ConsultaMateria extends ConsultaPadrao {
 
     protected function getTabela(){
-        return 'turma';
+        return 'materia';
     }
 
     protected function getColunaOrdenacao(){
@@ -15,12 +15,8 @@ class ConsultaTurma extends ConsultaPadrao {
         // Colunas
         return array(
             "Código",
-            "Escola",
-            "Nome",
-            "Data Início",
-            "Data Fim",
-            "Status Curso",
-            "Período Curso"
+            "Turma",
+            "Nome"
         );
     }
 
@@ -28,14 +24,10 @@ class ConsultaTurma extends ConsultaPadrao {
         // Colunas na mesma ordem dos titulos
         return array(
             "codigo",
-            "escola",
-            "nome",
-            "datainicio",
-            "datafim",
-            "statuscurso",
-            "periodocurso",
+            "turma",
+            "nome"
         );
     }
 }
 
-new ConsultaTurma();
+new ConsultaMateria();
