@@ -2,8 +2,8 @@
 // PROCESSAMENTO DA PAGINA
 // echo "<pre>" . print_r($_POST, true) . "</pre>";return true;
 // echo "<pre>" . print_r($_GET, true) . "</pre>";return true;
-require_once("QueryPadrao.php");
 
+require_once("QueryPadrao.php");
 class ConsultaAlteracaoPadrao {
 
     protected function formataData($data){
@@ -43,7 +43,7 @@ class ConsultaAlteracaoPadrao {
         return "sistema-escolar-com-bd";
     }
 
-    protected function processaDados($pagina){
+    protected function processaDadosPagina($pagina){
         if(isset($_POST["ACAO"])){
             $acao = $_POST["ACAO"];
             if($acao == "INCLUIR"){
@@ -299,5 +299,8 @@ class ConsultaAlteracaoPadrao {
         return $nome;    
     }
 
+    protected function getAcoes($pagina, $codigo){
+        return $this->getAcaoAlterar($pagina, $codigo) . $this->getAcaoIncluir($pagina, $codigo) ;
+    }
 }                
                 

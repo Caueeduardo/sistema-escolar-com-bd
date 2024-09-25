@@ -108,6 +108,9 @@ class ConsultaPadrao extends ConsultaAlteracaoPadrao{
                 $consulta .= '   <td>' . $aDados[$coluna] . '</td>';
             }
 
+            $codigo = $aDados["codigo"];
+            $consulta .= $this->getAcoes($this->getTabela(), $codigo);
+
             // FECHA A LINHA
             $consulta .= '</tr>';
         }
