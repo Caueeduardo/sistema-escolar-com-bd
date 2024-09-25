@@ -109,7 +109,7 @@ class ManutencaoPadrao {
         getQuery()->executaQuery($sqlInsert);
 
         // Redireciona para a pagina de consulta
-        // header('Location: Consulta' . ucfirst($pagina) . '.php');
+        header('Location: Consulta' . ucfirst($pagina) . '.php');
     }
 
     protected function processaDadosAlteracao($pagina){
@@ -213,6 +213,12 @@ class ManutencaoPadrao {
                 $sHTML .= '<br>';
             } else {
                 if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_CHECKBOX){
+
+                    //  $sHTML .= '<div style="display: flex;">';
+                    //                    $sHTML .= '     <label for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>
+                    //                                    <input type="' . $aColuna["tipo"] . '" id="' . $aColuna["campo"] . '" name="' . $aColuna["campo"] . '"  ' . $obrigatorio . ' value="' . $aColuna["valor"] . '">';
+                    //                    $sHTML .= '</div>';
+
                     $sHTML .= '<div style="display: flex;">';
                     $sHTML .= '<label class="tgl-btn" for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>';
                     $sHTML .= '<div class="checkbox-wrapper-64">
@@ -258,6 +264,9 @@ class ManutencaoPadrao {
     }
 
     protected function getDadosFormularioPadrao($acao){
+
+        // echo '<pre>' . print_r($_POST, true).'</pre>';
+
         $aDadosAtual = array();
         $aListaColunas = $this->getColunas();
         foreach ($aListaColunas as $aColuna){
@@ -267,7 +276,12 @@ class ManutencaoPadrao {
                 if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SENHA){
                     $aDadosAtual[$aColuna["campo"]] = password_hash($_POST[$aColuna["campo"]], PASSWORD_DEFAULT);
                 } else {
-                    $aDadosAtual[$aColuna["campo"]] = $_POST[$aColuna["campo"]];
+                    if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_CHECKBOX){
+                        $valor = isset($_POST[$aColuna["campo"]]) ? 1 : 0;
+                        $aDadosAtual[$aColuna["campo"]] = $valor;
+                    } else {
+                        $aDadosAtual[$aColuna["campo"]] = $_POST[$aColuna["campo"]];
+                    }
                 }
             }
         }
