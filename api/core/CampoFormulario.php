@@ -19,10 +19,11 @@ class CampoFormulario {
      * @param string $valor
      * @param bool $quebraLinha
      * @param array $aListaOpcoes
+     * @param array $descricaoCampo
      * @return array
      * @throws Exception
      */
-    public static function adicionaCampo($nomeCampo, $tipoCampo, $tipoCampoBancoDados = CampoFormulario::CAMPO_TEXTO, $obrigatorio = false, $valor = "", $quebraLinha = true, $aListaOpcoes = array()){
+    public static function adicionaCampo($nomeCampo, $tipoCampo, $tipoCampoBancoDados = CampoFormulario::CAMPO_TEXTO, $obrigatorio = false, $valor = "", $quebraLinha = true, $aListaOpcoes = array(), $descricaoCampo = ""){
         if($tipoCampo == self::CAMPO_TIPO_SELECT && !count($aListaOpcoes)){
             throw new Exception("Não foi informada a lista de opções para o campo:<b>" . $nomeCampo . "</b>!");
         }
@@ -34,7 +35,8 @@ class CampoFormulario {
             "obrigatorio" => $obrigatorio,
             "valor" =>$valor,
             "quebralinha" =>$quebraLinha,
-            "listaopcoes" =>$aListaOpcoes
+            "listaopcoes" =>$aListaOpcoes,
+            "descricaocampo" =>$descricaoCampo
         );
     }
 }

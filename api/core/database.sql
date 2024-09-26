@@ -249,5 +249,8 @@ VALUES ('1', '1', 'aluno', 'aluno'),
 INSERT INTO "public"."menu" ("mencodigo", "siscodigo", "mennome", "mentabela") 
 VALUES ('1', '6', 'cidade', 'cidade');
 
+ALTER TABLE aluno ALTER COLUMN senha TYPE VARCHAR(500)
 
-
+INSERT INTO public.menu
+(siscodigo, mennome, mentabela, mencodigo)
+VALUES(7, 'usuario', 'usuario', 1);

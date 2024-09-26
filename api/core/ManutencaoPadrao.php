@@ -27,6 +27,7 @@ class ManutencaoPadrao {
     }
 
     public function getDadosCadastro($codigoAlterar, $aListaColunas){
+        // sql ALTERACAO = SELECT * FROM MATERIA WHERE CODIGO = 1
         $sqlManutencao = $this->getSqlManutencao($codigoAlterar);
 
         $arDadosCadastro = getQuery()->selectAll($sqlManutencao);
@@ -56,7 +57,7 @@ class ManutencaoPadrao {
     protected function processaDadosExlusao($pagina){
         $codigoExcluir = $_GET["codigo"];
 
-        getQuery()->executaQuery("delete from " . $this->getTabela() . " where codigo = " . $codigoExcluir);
+        getQuery()->executaQuery(sSql: "delete from " . $this->getTabela() . " where codigo = " . $codigoExcluir);
 
         // Redireciona para a pagina de consulta
         header('Location: Consulta' . ucfirst($pagina) . '.php');
@@ -221,12 +222,6 @@ class ManutencaoPadrao {
                 $sHTML .= '<br>';
             } else {
                 if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_CHECKBOX){
-
-                    //  $sHTML .= '<div style="display: flex;">';
-                    //                    $sHTML .= '     <label for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>
-                    //                                    <input type="' . $aColuna["tipo"] . '" id="' . $aColuna["campo"] . '" name="' . $aColuna["campo"] . '"  ' . $obrigatorio . ' value="' . $aColuna["valor"] . '">';
-                    //                    $sHTML .= '</div>';
-
                     $sHTML .= '<div style="display: flex;">';
                     $sHTML .= '<label class="tgl-btn" for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>';
                     $sHTML .= '<div class="checkbox-wrapper-64">
@@ -237,7 +232,12 @@ class ManutencaoPadrao {
                                     </div>';
                     $sHTML .= '</div>';
                 } else {
-                    $sHTML .= '<label for="' . $aColuna["campo"] . '">' . ucfirst($aColuna["campo"]) . ':</label>
+                    $descricaoCampo = ucfirst($aColuna["campo"]);
+                    if($aColuna["descricaocampo"] != ""){
+                        $descricaoCampo = $aColuna["descricaocampo"];
+                    }
+
+                    $sHTML .= '<label for="' . $aColuna["campo"] . '">' .  $descricaoCampo . ':</label>
                                <input type="' . $aColuna["tipo"] . '" id="' . $aColuna["campo"] . '" name="' . $aColuna["campo"] . '"  ' . $obrigatorio . ' value="' . $aColuna["valor"] . '">';
                 }
             }
@@ -273,7 +273,7 @@ class ManutencaoPadrao {
 
     protected function getDadosFormularioPadrao($acao){
 
-        // echo '<pre>' . print_r($_POST, true).'</pre>';
+        // echo '<pre>' . print_r($_POST, true).'</pre>'; return true;
 
         $aDadosAtual = array();
         $aListaColunas = $this->getColunas();
@@ -295,120 +295,6 @@ class ManutencaoPadrao {
         }
 
         return $aDadosAtual;
-    }
-
-    private function getDadosFormularioOld($pagina, $acao){
-        $aDadosAtual = array();
-        switch ($pagina){
-            case "materia":
-                $aDadosAtual["codigo"] = $this->getProximoCodigo($acao);
-                $aDadosAtual["turma"] = $_POST["turma"];
-                $aDadosAtual["nome"]  = $_POST["nome"];
-                break;
-            case "turma":
-                $escola       = $_POST["escola"];
-                $nome         = $_POST["nome"];
-                $datainicio   = $_POST["datainicio"];
-                $datafim      = $_POST["datafim"];
-                $statuscurso  = $_POST["statuscurso"];
-                $periodocurso = $_POST["periodocurso"];
-
-                $aDadosAtual["codigo"] = $this->getProximoCodigo($acao);
-                $aDadosAtual["nome"] = $nome;
-
-                $aDadosAtual["escola"] = (int)$escola;
-                $aDadosAtual["datainicio"] = $datainicio;
-                $aDadosAtual["datafim"] = $datafim;
-                $aDadosAtual["statuscurso"] = $statuscurso;
-                $aDadosAtual["periodocurso"] = $periodocurso;
-
-                break;
-            case 'professor':
-                $aDadosAtual["codigo"] = $this->getProximoCodigo($acao);
-                $aDadosAtual["nome"] = $_POST["nome"];
-                $aDadosAtual["email"] = $_POST["email"];
-                $aDadosAtual["senha"] = password_hash($_POST["senha"], PASSWORD_DEFAULT);
-                break;
-            case 'escola':
-                $aDadosAtual["codigo"] = $this->getProximoCodigo($acao);
-
-                $descricao = $_POST["descricao"];
-                $cidade = $_POST["cidade"];
-
-                list(
-                    $tipo_ensino_creche,
-                    $tipo_ensino_basico,
-                    $tipo_ensino_fundamental,
-                    $tipo_ensino_medio,
-                    $tipo_ensino_profissional,
-                    $tipo_ensino_tecnico,
-                    $tipo_ensino_superior) = $this->getTipoEnsino();
-
-                $aDadosAtual["descricao"] = $descricao;
-                $aDadosAtual["cidade"] = $cidade;
-                $aDadosAtual["tipo_ensino_creche"] = $tipo_ensino_creche;
-                $aDadosAtual["tipo_ensino_basico"] = $tipo_ensino_basico;
-                $aDadosAtual["tipo_ensino_fundamental"] = $tipo_ensino_fundamental;
-                $aDadosAtual["tipo_ensino_medio"] = $tipo_ensino_medio;
-                $aDadosAtual["tipo_ensino_profissional"] = $tipo_ensino_profissional;
-                $aDadosAtual["tipo_ensino_tecnico"] = $tipo_ensino_tecnico;
-                $aDadosAtual["tipo_ensino_superior"] = $tipo_ensino_superior;
-                break;
-            case 'aluno':
-                $aDadosAtual["codigo"] = $this->getProximoCodigo($acao);
-                $aDadosAtual["nome"] = $_POST["nome"];
-                $aDadosAtual["email"] = $_POST["email"];
-                $aDadosAtual["senha"] = password_hash($_POST["senha"], PASSWORD_DEFAULT);
-                break;
-        }
-
-        if(!count($aDadosAtual)){
-            throw new Exception("Formulário da pagina:" . $pagina. " não programado!");
-        }
-
-        return $aDadosAtual;
-    }
-
-    protected function getTipoEnsino(){
-        $tipo_ensino_creche = 0;
-        $tipo_ensino_basico = 0;
-        $tipo_ensino_fundamental = 0;
-        $tipo_ensino_medio = 0;
-        $tipo_ensino_profissional = 0;
-        $tipo_ensino_tecnico = 0;
-        $tipo_ensino_superior = 0;
-
-        if(isset($_POST['tipo_ensino_creche'])){
-            $tipo_ensino_creche = 1;
-        }
-        if(isset($_POST['tipo_ensino_basico'])){
-            $tipo_ensino_basico = 1;
-        }
-        if(isset($_POST['tipo_ensino_fundamental'])){
-            $tipo_ensino_fundamental = 1;
-        }
-        if(isset($_POST['tipo_ensino_medio'])){
-            $tipo_ensino_medio = 1;
-        }
-        if(isset($_POST['tipo_ensino_profissional'])){
-            $tipo_ensino_profissional = 1;
-        }
-        if(isset($_POST['tipo_ensino_tecnico'])){
-            $tipo_ensino_tecnico = 1;
-        }
-        if(isset($_POST['tipo_ensino_superior'])){
-            $tipo_ensino_superior = 1;
-        }
-
-        return array(
-            $tipo_ensino_creche,
-            $tipo_ensino_basico,
-            $tipo_ensino_fundamental,
-            $tipo_ensino_medio,
-            $tipo_ensino_profissional,
-            $tipo_ensino_tecnico,
-            $tipo_ensino_superior
-        );
     }
 
     protected function getListaOpcao($tabela, $campoChave, $campoDescricao, $condicao = ""){
