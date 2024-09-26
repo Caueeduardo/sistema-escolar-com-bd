@@ -11,6 +11,10 @@ class ConsultaUsuario extends ConsultaPadrao {
         return 'usucodigo';
     }
 
+    protected function getColunaChave(){
+        return 'usucodigo';
+    }
+    
     protected function getColunas(){
         // Colunas
         return array(

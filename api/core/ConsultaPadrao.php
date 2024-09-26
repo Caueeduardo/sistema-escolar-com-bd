@@ -97,7 +97,7 @@ class ConsultaPadrao {
                 $consulta .= '   <td>' . $aDados[$coluna] . '</td>';
             }
 
-            $codigo = $aDados["codigo"];
+            $codigo = $aDados[$this->getColunaChave()];
             
             $consulta .= $this->getAcoes($this->getTabela(), $codigo);
 
@@ -112,6 +112,10 @@ class ConsultaPadrao {
         </html>';
 
         return $consulta;
+    }
+
+    protected function getColunaChave(){
+        return 'codigo';
     }
 
     // acoes da consulta

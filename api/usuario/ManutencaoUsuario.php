@@ -8,6 +8,10 @@ class ManutencaoUsuario extends ManutencaoPadrao {
         return 'usuario';
     }
 
+    protected function getColunaChave(){
+        return 'usucodigo';
+    }
+     
     protected function getColunas() {
         $aDadosColunas = array();
 

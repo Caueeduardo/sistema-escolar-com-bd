@@ -23,7 +23,7 @@ class ManutencaoPadrao {
     }
 
     protected function getSqlManutencao($codigo){
-        return " select * from " . $this->getTabela() . " where codigo = $codigo";
+        return " select * from " . $this->getTabela() . " where " . $this->getColunaChave() . " = $codigo";
     }
 
     public function getDadosCadastro($codigoAlterar, $aListaColunas){
@@ -35,7 +35,7 @@ class ManutencaoPadrao {
         $encontrouRegistro = false;
         $aListaColunasComValor = array();
         foreach($arDadosCadastro as $aDados){
-            $codigoAtual = $aDados["codigo"];
+            $codigoAtual = $aDados[$this->getColunaChave()];
             if($codigoAlterar == $codigoAtual){
                 $encontrouRegistro = true;
                 foreach ($aListaColunas as $aColuna){
@@ -57,7 +57,7 @@ class ManutencaoPadrao {
     protected function processaDadosExlusao($pagina){
         $codigoExcluir = $_GET["codigo"];
 
-        getQuery()->executaQuery(sSql: "delete from " . $this->getTabela() . " where codigo = " . $codigoExcluir);
+        getQuery()->executaQuery(sSql: "delete from " . $this->getTabela() . " where " . $this->getColunaChave() . " = " . $codigoExcluir);
 
         // Redireciona para a pagina de consulta
         header('Location: Consulta' . ucfirst($pagina) . '.php');
@@ -113,7 +113,7 @@ class ManutencaoPadrao {
     }
 
     protected function processaDadosAlteracao($pagina){
-        $codigoAlterar = $_POST["codigo"];
+        $codigoAlterar = $_POST[$this->getColunaChave()];
 
         $sqlUpdate = "UPDATE " . $this->getTabela() . " SET ";
 
@@ -137,12 +137,16 @@ class ManutencaoPadrao {
             $count++;
         }
 
-        $sqlUpdate .= " WHERE codigo = " . $codigoAlterar;
+        $sqlUpdate .= " WHERE " . $this->getColunaChave() . " = " . $codigoAlterar;
 
         getQuery()->executaQuery($sqlUpdate);
 
         // Redireciona para a pagina de consulta
         header('Location: Consulta' . ucfirst($pagina) . '.php');
+    }
+
+    protected function getColunaChave(){
+        return "codigo";
     }
 
     protected function getLarguraFormulario(){
@@ -162,7 +166,7 @@ class ManutencaoPadrao {
             if($acao == "ALTERAR"){
                 $acaoFormulario = "CONFIRMAR_ALTERACAO";
 
-                $codigo = $_GET["codigo"];
+                $codigo = $_GET[$this->getColunaChave()];
                 list($aListaColunas, $encontrou) = $this->getDadosCadastro($codigo, $aListaColunas);
 
                 if(!$encontrou){
@@ -196,7 +200,7 @@ class ManutencaoPadrao {
         <h3>' . $mensagemRegistroNaoEncontrado . '</h3>
         <form ' . $larguraFormulario . ' action="Manutencao' . ucfirst($pagina) . '.php" method="POST">
             <input type="hidden" id="ACAO" name="ACAO" value="' . $acaoFormulario . '">            
-            <input type="hidden" id="codigo" name="codigo" value="' . $codigo . '" required>';
+            <input type="hidden" id="' . $this->getColunaChave() . '" name="' . $this->getColunaChave() . '" value="' . $codigo . '" required>';
 
         foreach ($aListaColunas as $aColuna){
             $obrigatorio = $aColuna["obrigatorio"] ? "required" : "";
@@ -256,7 +260,7 @@ class ManutencaoPadrao {
 
     protected function getProximoCodigo($acao){
         if($acao == "ALTERAR"){
-            return $_POST["codigo"];
+            return $_POST[$this->getColunaChave()];
         }
 
         $tabela = $this->getTabela();
@@ -278,7 +282,7 @@ class ManutencaoPadrao {
         $aDadosAtual = array();
         $aListaColunas = $this->getColunas();
         foreach ($aListaColunas as $aColuna){
-            if($aColuna["campo"] == "codigo"){
+            if($aColuna["campo"] == $this->getColunaChave()){
                 $aDadosAtual[$aColuna["campo"]] = $this->getProximoCodigo($acao);
             } else {
                 if($aColuna["tipo"] == CampoFormulario::CAMPO_TIPO_SENHA){
